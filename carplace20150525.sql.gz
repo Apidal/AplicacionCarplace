@@ -1,0 +1,187 @@
+-- phpMyAdmin SQL Dump
+-- version 4.3.11
+-- http://www.phpmyadmin.net
+--
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 25-05-2015 a las 23:23:36
+-- Versión del servidor: 5.6.24
+-- Versión de PHP: 5.6.8
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
+--
+-- Base de datos: `carplace`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `alquileres`
+--
+
+CREATE TABLE IF NOT EXISTS `alquileres` (
+  `id_alquiler` int(11) NOT NULL,
+  `nick_usuario` varchar(20) COLLATE latin1_spanish_ci NOT NULL,
+  `matricula` varchar(7) COLLATE latin1_spanish_ci NOT NULL COMMENT 'matricula del vehiculo alquilado',
+  `fecha_ini` date NOT NULL,
+  `fecha_fin` date NOT NULL,
+  `metodo_pago` varchar(10) COLLATE latin1_spanish_ci NOT NULL,
+  `precio` float NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `alquileres`
+--
+
+INSERT INTO `alquileres` (`id_alquiler`, `nick_usuario`, `matricula`, `fecha_ini`, `fecha_fin`, `metodo_pago`, `precio`) VALUES
+(2, 'Alex', '0001', '2015-10-01', '2015-10-02', 'contado', 17.3),
+(9, 'Admin', '0001', '2015-05-30', '2015-05-31', 'Efectivo', 43.1),
+(10, 'Admin', '1234FPV', '2015-05-26', '2015-05-30', 'Efectivo', 94);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `reservas`
+--
+
+CREATE TABLE IF NOT EXISTS `reservas` (
+  `id_reserva` int(11) NOT NULL,
+  `nick_cliente` varchar(20) COLLATE latin1_spanish_ci NOT NULL,
+  `matricula` varchar(7) COLLATE latin1_spanish_ci NOT NULL,
+  `fecha_ini` date NOT NULL,
+  `fecha_fin` date NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `reservas`
+--
+
+INSERT INTO `reservas` (`id_reserva`, `nick_cliente`, `matricula`, `fecha_ini`, `fecha_fin`) VALUES
+(1, 'alex', '0001', '2015-05-06', '2015-05-08'),
+(2, 'Alex', '0001', '2015-05-09', '2015-05-10');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuarios`
+--
+
+CREATE TABLE IF NOT EXISTS `usuarios` (
+  `nick` varchar(20) COLLATE latin1_spanish_ci NOT NULL,
+  `nombre` varchar(20) COLLATE latin1_spanish_ci DEFAULT NULL,
+  `apellidos` varchar(50) COLLATE latin1_spanish_ci DEFAULT NULL,
+  `password` varchar(15) COLLATE latin1_spanish_ci DEFAULT NULL,
+  `dni` varchar(9) COLLATE latin1_spanish_ci DEFAULT NULL,
+  `fNac` date NOT NULL,
+  `administrador` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'para saber si es administrador o cliente',
+  `logueado` tinyint(1) DEFAULT '0' COMMENT 'Indica si el usuario esta logueado'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `usuarios`
+--
+
+INSERT INTO `usuarios` (`nick`, `nombre`, `apellidos`, `password`, `dni`, `fNac`, `administrador`, `logueado`) VALUES
+('Admin', 'Eprodifonsio', 'Villa Martinez', 'admin', '45839587N', '1967-01-06', 1, 0),
+('Alex', 'Alex', 'Pidal Gallego', 'contra', '45839586B', '1988-08-10', 1, 0),
+('Fitipaldi', 'Conductora', 'Feliz', '12345', '02520610V', '1983-05-19', 0, 0),
+('Pepina', 'Pepina', 'Longuina', '12345', '45839586B', '2015-05-14', 0, 0),
+('xPablo', 'Pablo', 'Apruebanos', '12345', '54152049K', '1976-02-29', 1, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `vehiculos`
+--
+
+CREATE TABLE IF NOT EXISTS `vehiculos` (
+  `matricula` varchar(7) COLLATE latin1_spanish_ci NOT NULL,
+  `marca` varchar(20) COLLATE latin1_spanish_ci NOT NULL,
+  `modelo` varchar(20) COLLATE latin1_spanish_ci NOT NULL,
+  `carburante` varchar(10) COLLATE latin1_spanish_ci NOT NULL,
+  `numero_plazas` int(10) unsigned NOT NULL,
+  `categoria` varchar(10) COLLATE latin1_spanish_ci NOT NULL,
+  `precio_dia` double NOT NULL COMMENT 'coste del alquiler dia'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `vehiculos`
+--
+
+INSERT INTO `vehiculos` (`matricula`, `marca`, `modelo`, `carburante`, `numero_plazas`, `categoria`, `precio_dia`) VALUES
+('0001', 'Seat', 'Ibiza', 'diesel', 3, 'coche', 43.1),
+('00015', 'BMW', 'bubu', 'Gasolina', 1, 'Coche', 12),
+('0003', 'Seat', 'Ibiza', 'Diesel', 3, 'Coche', 43.1),
+('0015wer', 'Opel', 'Bingo', 'Gasolina', 2, 'Limusina', 14.2),
+('1234FPV', 'RENAULT', 'Laguna', 'Diesel', 5, 'Coche', 23.5);
+
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `alquileres`
+--
+ALTER TABLE `alquileres`
+  ADD PRIMARY KEY (`id_alquiler`), ADD UNIQUE KEY `id_alquiler` (`id_alquiler`), ADD KEY `nick_usuario` (`nick_usuario`,`matricula`), ADD KEY `alquileres_matricula` (`matricula`);
+
+--
+-- Indices de la tabla `reservas`
+--
+ALTER TABLE `reservas`
+  ADD PRIMARY KEY (`id_reserva`), ADD UNIQUE KEY `id` (`id_reserva`), ADD KEY `nick_cliente` (`nick_cliente`), ADD KEY `matricula` (`matricula`);
+
+--
+-- Indices de la tabla `usuarios`
+--
+ALTER TABLE `usuarios`
+  ADD PRIMARY KEY (`nick`), ADD UNIQUE KEY `nick` (`nick`);
+
+--
+-- Indices de la tabla `vehiculos`
+--
+ALTER TABLE `vehiculos`
+  ADD PRIMARY KEY (`matricula`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `alquileres`
+--
+ALTER TABLE `alquileres`
+  MODIFY `id_alquiler` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
+--
+-- AUTO_INCREMENT de la tabla `reservas`
+--
+ALTER TABLE `reservas`
+  MODIFY `id_reserva` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `alquileres`
+--
+ALTER TABLE `alquileres`
+ADD CONSTRAINT `alquileres_matricula` FOREIGN KEY (`matricula`) REFERENCES `vehiculos` (`matricula`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `alquileres_nick` FOREIGN KEY (`nick_usuario`) REFERENCES `usuarios` (`nick`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `reservas`
+--
+ALTER TABLE `reservas`
+ADD CONSTRAINT `reservas_matricula` FOREIGN KEY (`matricula`) REFERENCES `vehiculos` (`matricula`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `reservas_nick` FOREIGN KEY (`nick_cliente`) REFERENCES `usuarios` (`nick`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
